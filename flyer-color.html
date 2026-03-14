@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Meow Dive Flyer – Bunt</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .flyer {
+    width: 794px; /* A4 width at 96dpi */
+    min-height: 1123px;
+    background: #0a0f2e;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 40px 100px rgba(0,0,0,.8);
+  }
+
+  /* ── animated ocean background ── */
+  .ocean-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,120,180,.5) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0,200,180,.3) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 10% 60%, rgba(0,80,200,.25) 0%, transparent 70%),
+      linear-gradient(180deg, #061a3a 0%, #0b2e55 40%, #0d3d4f 70%, #05111e 100%);
+    z-index: 0;
+  }
+
+  /* animated light rays */
+  .rays {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    height: 700px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .ray {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,220,255,.35) 0%, transparent 100%);
+    transform-origin: top center;
+    animation: sway 6s ease-in-out infinite;
+    border-radius: 50%;
+  }
+  .ray:nth-child(1)  { left:30%; width:60px; opacity:.4; animation-delay:0s; transform:rotate(-15deg); }
+  .ray:nth-child(2)  { left:38%; width:30px; opacity:.25; animation-delay:1s; transform:rotate(-8deg); }
+  .ray:nth-child(3)  { left:45%; width:80px; opacity:.5; animation-delay:.5s; transform:rotate(0deg); }
+  .ray:nth-child(4)  { left:55%; width:40px; opacity:.3; animation-delay:1.5s; transform:rotate(8deg); }
+  .ray:nth-child(5)  { left:63%; width:55px; opacity:.35; animation-delay:.8s; transform:rotate(15deg); }
+
+  @keyframes sway {
+    0%,100% { transform: rotate(var(--r, -10deg)) scaleX(1); }
+    50% { transform: rotate(calc(var(--r, -10deg) + 5deg)) scaleX(1.1); }
+  }
+
+  /* bubbles */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(0,220,255,.5);
+    background: rgba(0,180,220,.08);
+    animation: floatUp linear infinite;
+    z-index: 2;
+  }
+  @keyframes floatUp {
+    0% { transform:translateY(0) translateX(0); opacity:0; }
+    10% { opacity:1; }
+    90% { opacity:.4; }
+    100% { transform:translateY(-900px) translateX(15px); opacity:0; }
+  }
+
+  /* ── content ── */
+  .content {
+    position: relative;
+    z-index: 10;
+    padding: 0;
+  }
+
+  /* HEADER BAND */
+  .header-band {
+    background: linear-gradient(135deg, #ff6b35, #ff0099, #c800ff);
+    padding: 18px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+    padding-bottom: 40px;
+  }
+
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.8);
+    margin-bottom: 4px;
+  }
+
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    line-height: .9;
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0,0,0,.4);
+  }
+
+  .header-fish {
+    font-size: 80px;
+    animation: wobble 3s ease-in-out infinite;
+  }
+
+  @keyframes wobble {
+    0%,100% { transform: rotate(-5deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.1); }
+  }
+
+  /* HERO TEXT */
+  .hero-section {
+    padding: 50px 50px 20px;
+    text-align: center;
+  }
+
+  .big-question {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 52px;
+    color: #00e5ff;
+    line-height: 1.1;
+    text-shadow: 0 0 40px rgba(0,229,255,.6), 0 4px 0 rgba(0,100,130,.8);
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 20px rgba(0,229,255,.5), 0 4px 0 rgba(0,100,130,.8); }
+    to   { text-shadow: 0 0 60px rgba(0,229,255,.9), 0 0 100px rgba(0,229,255,.3), 0 4px 0 rgba(0,100,130,.8); }
+  }
+
+  .sub-question {
+    font-size: 18px;
+    color: rgba(255,255,255,.75);
+    margin-top: 12px;
+    font-weight: 300;
+  }
+
+  /* PILL BADGES */
+  .badges {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 24px 50px;
+  }
+
+  .badge {
+    background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+    border: 1px solid rgba(0,229,255,.5);
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-size: 12px;
+    color: #00e5ff;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+
+  /* MAIN GRID */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 10px 40px;
+  }
+
+  .offer-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(0,229,255,.2);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s;
+  }
+
+  .offer-card::before {
+    content:'';
+    position: absolute;
+    top:0; left:0; right:0;
+    height: 3px;
+    background: var(--accent, linear-gradient(90deg,#00e5ff,#0066ff));
+    border-radius: 12px 12px 0 0;
+  }
+
+  .offer-card.coral { --accent: linear-gradient(90deg,#ff6b35,#ff0099); }
+  .offer-card.teal  { --accent: linear-gradient(90deg,#00e5ff,#00b37d); }
+  .offer-card.purple{ --accent: linear-gradient(90deg,#c800ff,#0066ff); }
+  .offer-card.gold  { --accent: linear-gradient(90deg,#ffd700,#ff8c00); }
+
+  .offer-emoji { font-size: 32px; margin-bottom: 8px; }
+  .offer-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: #fff;
+    letter-spacing: .05em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .offer-desc {
+    font-size: 12.5px;
+    color: rgba(255,255,255,.6);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .offer-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #ffd700;
+    letter-spacing: .04em;
+  }
+  .offer-meta {
+    font-size: 10px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* DIVIDER */
+  .wave-divider {
+    text-align: center;
+    margin: 24px 0 10px;
+    color: rgba(0,229,255,.5);
+    font-size: 28px;
+    letter-spacing: .15em;
+  }
+
+  /* BOTTOM QR SECTION */
+  .bottom-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 40px 40px;
+  }
+
+  .qr-wrap {
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 3px #00e5ff,
+      0 0 30px rgba(0,229,255,.6),
+      0 20px 40px rgba(0,0,0,.5);
+    position: relative;
+  }
+
+  .qr-wrap img {
+    width: 160px;
+    height: 160px;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .qr-label {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: .15em;
+    color: #00e5ff;
+    white-space: nowrap;
+  }
+
+  .bottom-text {
+    flex: 1;
+  }
+
+  .scan-headline {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 32px;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .scan-headline span {
+    color: #ff6b35;
+  }
+
+  .scan-details {
+    font-size: 13px;
+    color: rgba(255,255,255,.6);
+    line-height: 1.7;
+  }
+
+  .wa-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #25D366;
+    color: #fff;
+    border-radius: 50px;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 14px;
+    text-decoration: none;
+    letter-spacing: .04em;
+    box-shadow: 0 6px 20px rgba(37,211,102,.5);
+  }
+
+  .wa-icon { font-size: 17px; }
+
+  /* FOOTER STRIP */
+  .footer-strip {
+    background: linear-gradient(135deg, #ff0099, #c800ff, #0066ff);
+    padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    clip-path: polygon(0 25%, 100% 0, 100% 100%, 0 100%);
+    padding-top: 28px;
+    margin-top: 20px;
+  }
+
+  .footer-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: .15em;
+    color: #fff;
+  }
+
+  .footer-loc {
+    font-size: 11px;
+    color: rgba(255,255,255,.8);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .flyer { box-shadow: none; margin: 0; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="flyer">
+  <!-- Ocean BG -->
+  <div class="ocean-bg"></div>
+
+  <!-- Light rays -->
+  <div class="rays">
+    <div class="ray"></div><div class="ray"></div>
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+  </div>
+
+  <!-- Bubbles -->
+  <div class="bubble" style="width:14px;height:14px;left:12%;bottom:200px;animation-duration:7s;animation-delay:0s;"></div>
+  <div class="bubble" style="width:8px;height:8px;left:25%;bottom:300px;animation-duration:9s;animation-delay:2s;"></div>
+  <div class="bubble" style="width:20px;height:20px;left:70%;bottom:150px;animation-duration:11s;animation-delay:1s;"></div>
+  <div class="bubble" style="width:6px;height:6px;left:85%;bottom:400px;animation-duration:8s;animation-delay:3s;"></div>
+  <div class="bubble" style="width:12px;height:12px;left:55%;bottom:250px;animation-duration:10s;animation-delay:1.5s;"></div>
+
+  <div class="content">
+
+    <!-- HEADER -->
+    <div class="header-band">
+      <div>
+        <div class="header-eyebrow">PADI · South Thailand · Andaman Sea</div>
+        <div class="header-title">Dive<br>with<br>Meow</div>
+
+      </div>
+      <div class="header-fish">🐠</div>
+    </div>
+
+    <!-- HERO TEXT -->
+    <div class="hero-section">
+      <div class="big-question">The ocean is calling! 🌊</div>
+      <div class="sub-question">Diving at Koh Lanta · Koh Phi Phi · Koh Haa · Hin Daeng</div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="badges">
+      <div class="badge">🐋 Whale Sharks</div>
+      <div class="badge">🦈 Leopard Sharks</div>
+      <div class="badge">🐢 Sea Turtles</div>
+      <div class="badge">🦁 Manta Rays</div>
+      <div class="badge">🤿 All Levels</div>
+    </div>
+
+    <!-- OFFER CARDS -->
+    <div class="main-grid">
+      <div class="offer-card coral">
+        <div class="offer-emoji">🏊</div>
+        <div class="offer-title">Snorkeling</div>
+        <div class="offer-desc">1 Day · 3 Spots · Luxury Speedboat. The Andaman Sea at its most stunning!</div>
+        <div class="offer-price">฿ 1,900</div>
+        <div class="offer-meta">from / person</div>
+      </div>
+
+      <div class="offer-card teal">
+        <div class="offer-emoji">🤿</div>
+        <div class="offer-title">Fun Diving</div>
+        <div class="offer-desc">1 Day · 2 Dives · top local sites. Caves, sharks &amp; turtles!</div>
+        <div class="offer-price">฿ 3,500</div>
+        <div class="offer-meta">from / person</div>
+      </div>
+
+      <div class="offer-card purple">
+        <div class="offer-emoji">⭐</div>
+        <div class="offer-title">PADI Open Water</div>
+        <div class="offer-desc">3–4 Days · full certification. Your diving licence for the whole world!</div>
+        <div class="offer-price">฿ 14,200</div>
+        <div class="offer-meta">full course incl.</div>
+      </div>
+
+      <div class="offer-card gold">
+        <div class="offer-emoji">🌟</div>
+        <div class="offer-title">Discover Scuba</div>
+        <div class="offer-desc">1 Day · 2 Dives · no cert needed. Your very first breath underwater!</div>
+        <div class="offer-price">฿ 4,500</div>
+        <div class="offer-meta">beginner experience</div>
+      </div>
+    </div>
+
+    <div class="wave-divider">〰〰〰〰〰〰〰〰〰〰〰〰〰</div>
+
+    <!-- BOTTOM QR + TEXT -->
+    <div class="bottom-section">
+      <div class="qr-wrap">
+        <img src="qr.png" alt="QR Code WhatsApp Meow"/>
+        <div class="qr-label">SCAN ME 📱</div>
+      </div>
+
+      <div class="bottom-text">
+        <div class="scan-headline">Scan, text,<br><span>dive in! 🤙</span></div>
+        <div class="scan-details">
+          Scan the QR code &amp; book directly on WhatsApp.<br>
+          Meow replies fast &amp; personally.<br>
+          No experience needed · Small groups<br>
+          PADI certified · Top equipment included
+        </div>
+        <a class="wa-button" href="#">
+          <span class="wa-icon">💬</span> Book now on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-strip">
+      <div class="footer-name">MEOW · DIVE INSTRUCTOR</div>
+      <div class="footer-loc">🌍 South Thailand · Andaman Sea · PADI</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
